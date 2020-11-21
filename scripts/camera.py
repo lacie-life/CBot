@@ -13,7 +13,7 @@ def faceDetect():
 
         while True:
             return_key, imageFrame = video_capture.read()
-            imageFrame = imageFrame[80:400, 100:540]
+            imageFrame = imageFrame[50:430, 100:540]
             if not return_key:
                 break
 
@@ -54,11 +54,16 @@ def faceDetect():
                                            cv2.RETR_TREE, 
                                            cv2.CHAIN_APPROX_SIMPLE) 
 
+            max_area_red = 0
+            for pic, contour in enumerate(contours):
+                area = cv2.contourArea(contour)
+                if area > max_area_red:
+                    max_area_red = area
             
-      
             for pic, contour in enumerate(contours): 
-                area = cv2.contourArea(contour) 
-                if(area > 300): 
+                area = cv2.contourArea(contour)
+            #    print(contour)
+                if(area == max_area_red and area > 800): 
                     x, y, w, h = cv2.boundingRect(contour) 
                     imageFrame = cv2.rectangle(imageFrame, (x, y),  
                                        (x + w, y + h),  
@@ -72,10 +77,16 @@ def faceDetect():
             contours, hierarchy = cv2.findContours(green_mask, 
                                                 cv2.RETR_TREE, 
                                                 cv2.CHAIN_APPROX_SIMPLE) 
+
+            max_area_green = 0
+            for pic, contour in enumerate(contours):
+                area = cv2.contourArea(contour)
+                if area > max_area_green:
+                    max_area_green = area
             
             for pic, contour in enumerate(contours): 
                 area = cv2.contourArea(contour) 
-                if(area > 300): 
+                if(area == max_area_green and area > 800): 
                     x, y, w, h = cv2.boundingRect(contour) 
                     imageFrame = cv2.rectangle(imageFrame, (x, y),  
                                             (x + w, y + h), 
@@ -89,9 +100,16 @@ def faceDetect():
             contours, hierarchy = cv2.findContours(blue_mask, 
                                                 cv2.RETR_TREE, 
                                                 cv2.CHAIN_APPROX_SIMPLE) 
+
+            max_area_blue = 0
+            for pic, contour in enumerate(contours):
+                area = cv2.contourArea(contour)
+                if area > max_area_blue:
+                    max_area_blue = area
+
             for pic, contour in enumerate(contours): 
                 area = cv2.contourArea(contour) 
-                if(area > 300): 
+                if(area == max_area_blue and area > 800): 
                     x, y, w, h = cv2.boundingRect(contour) 
                     imageFrame = cv2.rectangle(imageFrame, (x, y), 
                                             (x + w, y + h), 
